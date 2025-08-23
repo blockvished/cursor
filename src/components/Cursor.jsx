@@ -8,6 +8,9 @@ function Cursor() {
         gsap.to("#cursor", {
             x: clientX-20/2,
             y: clientY-20/2,
+            duration:1,
+            delay:0,
+            ease: "power4.out"
         })
     }
 
