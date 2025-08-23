@@ -21,7 +21,7 @@ function Cursor() {
 
     return (
         <>
-            <div id="cursor" className='absolute top-0 left-0 h-[20px] w-[20px] bg-red-300 rounded-full z-5 pointer-events-none' />
+            <div id="cursor" className='absolute top-0 left-0 h-[20px] w-[20px] bg-white rounded-full z-10 pointer-events-none mix-blend-difference' />
             <div className="w-full h-screen flex justify-center items-center">
                 <h1
                     onMouseEnter={() =>
@@ -32,7 +32,7 @@ function Cursor() {
                         gsap.to("#cursor", {
                             scale: 1, duration: 0.3
                         })}
-                    className="text-9xl z-10">IM VICTOR</h1>
+                    className="text-9xl">IM VICTOR</h1>
             </div>
         </>
     )
