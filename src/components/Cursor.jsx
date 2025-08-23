@@ -6,10 +6,10 @@ function Cursor() {
     const handleMouseMove = (event) => {
         const { clientX, clientY } = event
         gsap.to("#cursor", {
-            x: clientX-20/2,
-            y: clientY-20/2,
-            duration:1,
-            delay:0,
+            x: clientX - 20 / 2,
+            y: clientY - 20 / 2,
+            duration: 1,
+            delay: 0,
             ease: "power4.out"
         })
     }
@@ -20,7 +20,21 @@ function Cursor() {
     })
 
     return (
-        <div id="cursor" className='absolute top-0 left-0 h-[20px] w-[20px] bg-white rounded-full z-10' />
+        <>
+            <div id="cursor" className='absolute top-0 left-0 h-[20px] w-[20px] bg-red-300 rounded-full z-5 pointer-events-none' />
+            <div className="w-full h-screen flex justify-center items-center">
+                <h1
+                    onMouseEnter={() =>
+                        gsap.to("#cursor", {
+                            scale: 8, duration: 0.3
+                        })}
+                    onMouseLeave={() => 
+                        gsap.to("#cursor", {
+                            scale: 1, duration: 0.3
+                        })}
+                    className="text-9xl z-10">IM VICTOR</h1>
+            </div>
+        </>
     )
 }
 
