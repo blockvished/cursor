@@ -1,9 +1,10 @@
 import './App.css'
+import Cursor from './components/Cursor'
 
 function App() {
   return (
     <div className=''>
-      <h1 className='title'>Hello Victor</h1>
+      <Cursor />
     </div>
   )
 }
