@@ -1,7 +1,4 @@
-// CursorTrail.tsx
 import React, { useEffect, useRef } from "react";
-
-// https://codepen.io/zainzafar/pen/oNypoEr
 
 const colors = [
   "#ffb56b",
@@ -30,7 +27,7 @@ const colors = [
 
 const NUM_CIRCLES = 20;
 
-const CursorTrail = () => {
+export default function CursorTrail() {
   const coords = useRef({ x: 0, y: 0 });
   const circlesRef = useRef([]);
   const positions = useRef(
@@ -38,6 +35,9 @@ const CursorTrail = () => {
   );
 
   useEffect(() => {
+    // Hide the native cursor globally
+    document.body.style.cursor = "none";
+
     const handleMouseMove = (e) => {
       coords.current.x = e.clientX;
       coords.current.y = e.clientY;
@@ -53,18 +53,13 @@ const CursorTrail = () => {
         const circle = circlesRef.current[index];
         if (!circle) return;
 
-        // position the circle
         circle.style.left = x - 12 + "px";
         circle.style.top = y - 12 + "px";
+        circle.style.scale = (NUM_CIRCLES - index) / NUM_CIRCLES;
 
-        // scale based on index
-        circle.style.scale = String((NUM_CIRCLES - index) / NUM_CIRCLES);
-
-        // save current position
         pos.x = x;
         pos.y = y;
 
-        // move towards the next circle’s position
         const nextPos = positions.current[index + 1] || positions.current[0];
         x += (nextPos.x - x) * 0.3;
         y += (nextPos.y - y) * 0.3;
@@ -77,6 +72,7 @@ const CursorTrail = () => {
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
+      document.body.style.cursor = "auto"; // restore cursor on unmount
     };
   }, []);
 
@@ -103,6 +99,4 @@ const CursorTrail = () => {
       ))}
     </>
   );
-};
-
-export default CursorTrail;
+}
