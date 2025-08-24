@@ -1,7 +1,108 @@
-function Cursor() {
-  return (
-    <div className=''></div>
-  )
-}
+// CursorTrail.tsx
+import React, { useEffect, useRef } from "react";
 
-export default Cursor
+// https://codepen.io/zainzafar/pen/oNypoEr
+
+const colors = [
+  "#ffb56b",
+  "#fdaf69",
+  "#f89d63",
+  "#f59761",
+  "#ef865e",
+  "#ec805d",
+  "#e36e5c",
+  "#df685c",
+  "#d5585c",
+  "#d1525c",
+  "#c5415d",
+  "#c03b5d",
+  "#b22c5e",
+  "#ac265e",
+  "#9c155f",
+  "#950f5f",
+  "#830060",
+  "#7c0060",
+  "#680060",
+  "#60005f",
+  "#48005f",
+  "#3d005e",
+];
+
+const NUM_CIRCLES = 20;
+
+const CursorTrail = () => {
+  const coords = useRef({ x: 0, y: 0 });
+  const circlesRef = useRef([]);
+  const positions = useRef(
+    Array.from({ length: NUM_CIRCLES }, () => ({ x: 0, y: 0 })),
+  );
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      coords.current.x = e.clientX;
+      coords.current.y = e.clientY;
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+
+    function animateCircles() {
+      let x = coords.current.x;
+      let y = coords.current.y;
+
+      positions.current.forEach((pos, index) => {
+        const circle = circlesRef.current[index];
+        if (!circle) return;
+
+        // position the circle
+        circle.style.left = x - 12 + "px";
+        circle.style.top = y - 12 + "px";
+
+        // scale based on index
+        circle.style.scale = String((NUM_CIRCLES - index) / NUM_CIRCLES);
+
+        // save current position
+        pos.x = x;
+        pos.y = y;
+
+        // move towards the next circle’s position
+        const nextPos = positions.current[index + 1] || positions.current[0];
+        x += (nextPos.x - x) * 0.3;
+        y += (nextPos.y - y) * 0.3;
+      });
+
+      requestAnimationFrame(animateCircles);
+    }
+
+    animateCircles();
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, []);
+
+  return (
+    <>
+      {Array.from({ length: NUM_CIRCLES }).map((_, i) => (
+        <div
+          key={i}
+          ref={(el) => {
+            if (el) circlesRef.current[i] = el;
+          }}
+          style={{
+            height: "24px",
+            width: "24px",
+            borderRadius: "50%",
+            backgroundColor: colors[i % colors.length],
+            position: "fixed",
+            top: 0,
+            left: 0,
+            pointerEvents: "none",
+            zIndex: 99999999,
+          }}
+        />
+      ))}
+    </>
+  );
+};
+
+export default CursorTrail;
